@@ -15,7 +15,8 @@ assurez vous d'avoir  `node-sass` installé dans sa globalité
 ### Backend :
 
 ```
-git clone git@github.com:marieparet/so-pekocko.git back
+
+
 cd backend
 npm install
 nodemon server
