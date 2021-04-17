@@ -1,17 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const user = process.env.user
-const password = process.env.passeword
-const host = process.env.host
-const dbName = process.env.dbName
 const mongoSanitize = require('express-mongo-sanitize');
 
 const app = express();
 
 const path = require('path');
-
-require('dotenv').config();
 
 const saucesRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user')
@@ -19,13 +12,24 @@ const userRoutes = require('./routes/user')
 const Sauce = require('./models/Sauce');
 
 //connexion à la base de données MongoDB
+
+require('dotenv').config();
+
+const mongoose = require('mongoose');
+/* const user = process.env.DB_USER
+const password = process.env.DB_PASSWORD
+const host = process.env.DB_HOST
+const dbName = process.env.DB_NAME */
+
+
 mongoose
   .connect(
-    `mongodb+srv://${user}:${password}@${host}/${dbName}?retryWrites=true&w=majority`,
+    `mongodb+srv://`+ process.env.DB_USER +`:` + process.env.DB_PASSWORD +`@` + process.env.DB_HOST + `/` + process.env.DB_NAME + `?retryWrites=true&w=majority`,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
+  
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -36,9 +40,9 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
-app.use(mongoSanitize({
+/* app.use(mongoSanitize({
   replaceWith: '_'
-}))
+})) */
 
 //rendre les images accessibles publiquement pour toutes les requêtes vers la route /images
 app.use('/images', express.static(path.join(__dirname, 'images')));

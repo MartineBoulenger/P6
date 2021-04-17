@@ -2,19 +2,20 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cryptojs = require('crypto-js');
 
+
 const User = require('../models/User');
 
 exports.signup = (req, res, next) => {
   //regex pour exiger un mot de passe fort d'au moins 8 caractères
   const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,}$/; 
   const password = req.body.password;
-  const cryptedEmail = cryptojs.HmacSHA256(req.body.email, process.env.EMAIL_ENCRYPTION_KEY).toString();
+  //const cryptedEmail = cryptojs.HmacSHA256(req.body.email, process.env.EMAIL_ENCRYPTION_KEY).toString();
 
   if (password.match(regex)) {
   bcrypt.hash(password, 10)
     .then(hash => {
       const user = new User({
-        email: cryptedEmail,
+        email: req.body.email,
         password: hash
       });
       user.save()
@@ -28,9 +29,9 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-  const cryptedEmail = cryptojs.HmacSHA256(req.body.email, process.env.EMAIL_ENCRYPTION_KEY).toString();
+  //const cryptedEmail = cryptojs.HmacSHA256(req.body.email, process.env.EMAIL_ENCRYPTION_KEY).toString();
 
-  User.findOne({ email: cryptedEmail })
+  User.findOne({ email: req.body.email })
     .then(user => {
       if (!user) {
         return res.status(401).json({ error: 'Utilisateur non trouvé !' });
