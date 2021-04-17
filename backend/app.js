@@ -1,3 +1,10 @@
+require('dotenv').config();
+const mongoose = require('mongoose');
+/* const user = process.env.DB_USER
+const password = process.env.DB_PASSWORD
+const host = process.env.DB_HOST
+const dbName = process.env.DB_NAME */
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -13,13 +20,9 @@ const Sauce = require('./models/Sauce');
 
 //connexion à la base de données MongoDB
 
-require('dotenv').config();
 
-const mongoose = require('mongoose');
-/* const user = process.env.DB_USER
-const password = process.env.DB_PASSWORD
-const host = process.env.DB_HOST
-const dbName = process.env.DB_NAME */
+
+
 
 
 mongoose
@@ -38,7 +41,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 /* app.use(mongoSanitize({
   replaceWith: '_'
