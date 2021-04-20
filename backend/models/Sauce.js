@@ -1,5 +1,7 @@
+//Importation du package mongoose pour communication optimale avec mongoDB
 const mongoose = require('mongoose');
 
+//Création du schéma pour la ressource "sauce"
 const sauceSchema = mongoose.Schema({
   userId: { type: String, required: true },
   name: { type: String, required: true },
